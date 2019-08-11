@@ -2,7 +2,10 @@ var mycanvas=document.getElementById("canvas")
 var context=canvas.getContext("2d")   
 var div=document.getElementById("actions")
 var eraserEnabled=false
-
+var lineWidth=3
+document.body.ontouchstart=function(event){
+    event.preventDefault()
+}
 autoSetCanvasSize(mycanvas)
 
 if (document.ontouchstart===undefined){
@@ -11,14 +14,98 @@ if (document.ontouchstart===undefined){
 else{   
     // 触屏设备
     listenToTouch(mycanvas,context)
-
 }
 listenToMouse(mycanvas,context)
 
+black.onclick=function(){
+    context.fillStyle="black"
+    context.strokeStyle="black"
+    black.classList.add("active")
+    red.classList.remove("active")
+    green.classList.remove("active")
+    blue.classList.remove("active")
+    yellow.classList.remove("active")
+}
+red.onclick=function(){
+    context.fillStyle="red"
+    context.strokeStyle="red"
+    black.classList.remove("active")
+    red.classList.add("active")
+    green.classList.remove("active")
+    blue.classList.remove("active")
+    yellow.classList.remove("active")
+}
+green.onclick=function(){
+    context.fillStyle="green"
+    context.strokeStyle="green"
+    black.classList.remove("active")
+    red.classList.remove("active")
+    green.classList.add("active")
+    blue.classList.remove("active")
+    yellow.classList.remove("active")
+}
+blue.onclick=function(){
+    context.fillStyle="blue"
+    context.strokeStyle="blue"
+    black.classList.remove("active")
+    red.classList.remove("active")
+    green.classList.remove("active")
+    blue.classList.add("active")
+    yellow.classList.remove("active")
+}
+yellow.onclick=function(){
+    context.fillStyle="yellow"
+    context.strokeStyle="yellow"
+    black.classList.remove("active")
+    red.classList.remove("active")
+    green.classList.remove("active")
+    blue.classList.remove("active")
+    yellow.classList.add("active")
+}
+
+thin.onclick=function(){
+    lineWidth=3
+    thin.classList.add("active")
+    thick.classList.remove("active")
+}
+thick.onclick=function(){
+    lineWidth=6
+    thin.classList.remove("active")
+    thick.classList.add("active")
+}
+
+clear.onclick=function(){
+    context.clearRect(0,0,canvas.width,canvas.height)
+}
+
+download.onclick=function(){
+    var url=mycanvas.toDataURL("image/png")
+    var a=document.createElement("a")
+    a.href=url
+    a.target="_blank"
+    a.download="作品"
+    a.click()
+}
+
 brushOrEraser(div)
 
+
+function autoSetCanvasSize(canvas){
+
+    setCanvasSize()
+    
+    window.onresize=function(){
+        setCanvasSize()
+    }
+    
+    function setCanvasSize(){
+        canvas.width=document.documentElement.clientWidth
+        canvas.height=document.documentElement.clientHeight
+    }
+}
+
 function listenToMouse(canvas,context){
-    function drawLine(x1,y1,x2,y2,lineWidth){
+    function drawLine(x1,y1,x2,y2){
         context.beginPath()
         context.moveTo(x1,y1)
         context.lineWidth=lineWidth
@@ -58,7 +145,7 @@ function listenToMouse(canvas,context){
                 var x=event.clientX
                 var y=event.clientY
                 var newPoint={"x":x,"y":y}
-                drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y,3 )
+                drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y )
                 lastPoint=newPoint
             }
         }
@@ -71,22 +158,8 @@ function listenToMouse(canvas,context){
     }
 }
 
-function autoSetCanvasSize(canvas){
-
-    setCanvasSize()
-    
-    window.onresize=function(){
-        setCanvasSize()
-    }
-    
-    function setCanvasSize(){
-        canvas.width=document.documentElement.clientWidth
-        canvas.height=document.documentElement.clientHeight
-    }
-}
-
 function listenToTouch(canvas,context){
-    function drawLine(x1,y1,x2,y2,lineWidth){
+    function drawLine(x1,y1,x2,y2){
         context.beginPath()
         context.moveTo(x1,y1)
         context.lineWidth=lineWidth
@@ -125,7 +198,7 @@ function listenToTouch(canvas,context){
                 var x=event.touches[0].clientX
                 var y=event.touches[0].clientY
                 var newPoint={"x":x,"y":y}
-                drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y,3 )
+                drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
                 lastPoint=newPoint
             }
         }
@@ -138,16 +211,17 @@ function listenToTouch(canvas,context){
     }
 }
 
-function brushOrEraser(div){
-    eraser=document.getElementById("eraser")
+function brushOrEraser(){
     
     eraser.onclick=function(){
         eraserEnabled=true
-        div.className="action x"
+        eraser.classList.add("active")
+        pen.classList.remove("active")
     }
-    brush.onclick=function(){
-        eraserEnabled=false
-        div.className="action"
+    pen.onclick=function(){
+        eraserEnabled=false  
+        pen.classList.add("active")
+        eraser.classList.remove("active") 
     }
 }
 
@@ -155,4 +229,4 @@ function drawCircle(x,y,radius){
     context.beginPath()
     context.arc(x,y,radius,0,Math.PI*2)
     context.fill()
-}//画圆圈没有意义\\
+}//画圆圈没有意义
