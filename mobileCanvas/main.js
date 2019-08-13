@@ -9,17 +9,31 @@ document.body.ontouchstart=function(event){
 autoSetCanvasSize(mycanvas)
 
 if (document.ontouchstart===undefined){
-    listenToMouse(mycanvas,context)
+    listenToMouse(mycanvas)
 }
 else{   
     // 触屏设备
-    listenToTouch(mycanvas,context)
+    listenToTouch(mycanvas)
 }
-listenToMouse(mycanvas,context)
+listenToMouse(mycanvas)
 
+function changeColor(){
+
+}
+var colorsArray=["black","red","green","yellow","blue"]
+function getLi(id){
+    var li=document.getElementById(id)
+    return li
+}
+function chooseColor(id){
+    // let li=document.getElementById(id)
+    context.fillStyle=id
+    context.strokeStyle=id
+    // console.log(id)
+    // li.classList.add("active")
+}
 black.onclick=function(){
-    context.fillStyle="black"
-    context.strokeStyle="black"
+    chooseColor("black")
     black.classList.add("active")
     red.classList.remove("active")
     green.classList.remove("active")
@@ -27,8 +41,7 @@ black.onclick=function(){
     yellow.classList.remove("active")
 }
 red.onclick=function(){
-    context.fillStyle="red"
-    context.strokeStyle="red"
+    chooseColor("red")
     black.classList.remove("active")
     red.classList.add("active")
     green.classList.remove("active")
@@ -36,8 +49,7 @@ red.onclick=function(){
     yellow.classList.remove("active")
 }
 green.onclick=function(){
-    context.fillStyle="green"
-    context.strokeStyle="green"
+    chooseColor("green")
     black.classList.remove("active")
     red.classList.remove("active")
     green.classList.add("active")
@@ -45,8 +57,7 @@ green.onclick=function(){
     yellow.classList.remove("active")
 }
 blue.onclick=function(){
-    context.fillStyle="blue"
-    context.strokeStyle="blue"
+    chooseColor("blue")
     black.classList.remove("active")
     red.classList.remove("active")
     green.classList.remove("active")
@@ -54,8 +65,7 @@ blue.onclick=function(){
     yellow.classList.remove("active")
 }
 yellow.onclick=function(){
-    context.fillStyle="yellow"
-    context.strokeStyle="yellow"
+    chooseColor("yellow")
     black.classList.remove("active")
     red.classList.remove("active")
     green.classList.remove("active")
@@ -104,7 +114,7 @@ function autoSetCanvasSize(canvas){
     }
 }
 
-function listenToMouse(canvas,context){
+function listenToMouse(canvas){
     function drawLine(x1,y1,x2,y2){
         context.beginPath()
         context.moveTo(x1,y1)
@@ -158,7 +168,7 @@ function listenToMouse(canvas,context){
     }
 }
 
-function listenToTouch(canvas,context){
+function listenToTouch(canvas){
     function drawLine(x1,y1,x2,y2){
         context.beginPath()
         context.moveTo(x1,y1)

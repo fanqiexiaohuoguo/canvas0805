@@ -1,7 +1,9 @@
 *{
     margin: 0;
     padding: 0;
-}
+    touch-action: pan-y; 
+} 
+
 body{
     overflow: hidden; /*禁用滚动 */
 }
@@ -23,7 +25,7 @@ canvas{
 }
 .action{
     position: fixed;
-    left: 0px;
+    left:2px;
     top: 0px;
     padding: 20px;
 }
@@ -40,19 +42,35 @@ canvas{
 .colors{
     position: fixed;
     top: 45px;
-    left: 20px;
+    left: 19px;
     padding: 10px;
 }
 .colors >li{
-    width: 17px;
-    height: 17px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    margin: 10px 0px;
-    box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.25);
+    border:#c0c0c0 1px solid;
+    box-sizing: border-box;
     transition: all 0.2s;
+    margin: 10px 0px;
+    position: relative;
 }
-.colors >li.active{
-    transform: scale(1.3);
+.colors>li svg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    fill:transparent;
+}
+.colors >li.active svg{
+    font-weight: bold;
+    fill: white;
+}
+.colors >li.active.yellow svg{
+    font-weight: bold;
+    fill: black;
 }
 .colors >li.black{
     background: black;
