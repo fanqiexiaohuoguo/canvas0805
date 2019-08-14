@@ -1,95 +1,46 @@
-var mycanvas=document.getElementById("canvas")
+// 全局变量
+var canvas=document.getElementById("canvas")
 var context=canvas.getContext("2d")   
 var div=document.getElementById("actions")
 var eraserEnabled=false
 var lineWidth=3
+
+// 阻止滑动带来的默认事件
 document.body.ontouchstart=function(event){
     event.preventDefault()
 }
-autoSetCanvasSize(mycanvas)
+// 1.调整画板大小
+autoSetCanvasSize(canvas)
 
+// 2.兼容触屏设备
 if (document.ontouchstart===undefined){
-    listenToMouse(mycanvas)
+    listenToMouse(canvas)
 }
 else{   
     // 触屏设备
-    listenToTouch(mycanvas)
+    listenToTouch(canvas)
 }
-listenToMouse(mycanvas)
+listenToMouse(canvas)
 
-function changeColor(){
-
-}
+// 3.批量设置颜色
 var colorsArray=["black","red","green","yellow","blue"]
-function getLi(id){
-    var li=document.getElementById(id)
-    return li
-}
-function chooseColor(id){
-    // let li=document.getElementById(id)
-    context.fillStyle=id
-    context.strokeStyle=id
-    // console.log(id)
-    // li.classList.add("active")
-}
-black.onclick=function(){
-    chooseColor("black")
-    black.classList.add("active")
-    red.classList.remove("active")
-    green.classList.remove("active")
-    blue.classList.remove("active")
-    yellow.classList.remove("active")
-}
-red.onclick=function(){
-    chooseColor("red")
-    black.classList.remove("active")
-    red.classList.add("active")
-    green.classList.remove("active")
-    blue.classList.remove("active")
-    yellow.classList.remove("active")
-}
-green.onclick=function(){
-    chooseColor("green")
-    black.classList.remove("active")
-    red.classList.remove("active")
-    green.classList.add("active")
-    blue.classList.remove("active")
-    yellow.classList.remove("active")
-}
-blue.onclick=function(){
-    chooseColor("blue")
-    black.classList.remove("active")
-    red.classList.remove("active")
-    green.classList.remove("active")
-    blue.classList.add("active")
-    yellow.classList.remove("active")
-}
-yellow.onclick=function(){
-    chooseColor("yellow")
-    black.classList.remove("active")
-    red.classList.remove("active")
-    green.classList.remove("active")
-    blue.classList.remove("active")
-    yellow.classList.add("active")
+var flagArray=[false,false,false,false,false]
+
+for (let k=0;k<colorsArray.length;k++){
+    BatchSettingColor(colorsArray[k])
 }
 
-thin.onclick=function(){
-    lineWidth=3
-    thin.classList.add("active")
-    thick.classList.remove("active")
-}
-thick.onclick=function(){
-    lineWidth=6
-    thin.classList.remove("active")
-    thick.classList.add("active")
-}
+//5.设置画笔粗细
+setBrush()
 
+// 6.设置清屏
 clear.onclick=function(){
     context.clearRect(0,0,canvas.width,canvas.height)
 }
 
+// 7.设置下载
 download.onclick=function(){
-    var url=mycanvas.toDataURL("image/png")
+    var url=canvas.toDataURL("image/png")
     var a=document.createElement("a")
     a.href=url
     a.target="_blank"
@@ -97,8 +48,8 @@ download.onclick=function(){
     a.click()
 }
 
+// 8.设置橡皮擦
 brushOrEraser(div)
-
 
 function autoSetCanvasSize(canvas){
 
@@ -115,19 +66,6 @@ function autoSetCanvasSize(canvas){
 }
 
 function listenToMouse(canvas){
-    function drawLine(x1,y1,x2,y2){
-        context.beginPath()
-        context.moveTo(x1,y1)
-        context.lineWidth=lineWidth
-        context.lineTo(x2,y2)
-        context.stroke()
-        context.closePath()
-    }
-    
-    function resizePage(){
-        canvas.width=document.documentElement.clientWidth
-        canvas.height=document.documentElement.clientHeight
-    }
 
     var using=false
     var lastPoint={"x":undefined,"y":undefined}
@@ -169,20 +107,6 @@ function listenToMouse(canvas){
 }
 
 function listenToTouch(canvas){
-    function drawLine(x1,y1,x2,y2){
-        context.beginPath()
-        context.moveTo(x1,y1)
-        context.lineWidth=lineWidth
-        context.lineTo(x2,y2)
-        context.stroke()
-        context.closePath()
-    }
-    
-    function resizePage(){
-        canvas.width=document.documentElement.clientWidth
-        canvas.height=document.documentElement.clientHeight
-    }
-
     var using=false
     var lastPoint={"x":undefined,"y":undefined}
 
@@ -221,8 +145,69 @@ function listenToTouch(canvas){
     }
 }
 
+function drawLine(x1,y1,x2,y2){
+    context.beginPath()
+    context.moveTo(x1,y1)
+    context.lineWidth=lineWidth
+    context.lineTo(x2,y2)
+    context.stroke()
+    context.closePath()
+}
+
+function drawCircle(x,y,radius){
+    context.beginPath()
+    context.arc(x,y,radius,0,Math.PI*2)
+    context.fill()
+}
+
+function BatchSettingColor(colorName){
+    var color=document.getElementById(colorName)
+    color.onclick=function(){
+        chooseColor(colorName)
+        addOrRemove(colorName)
+    }
+}
+
+function chooseColor(id){
+    context.fillStyle=id
+    context.strokeStyle=id
+}
+
+function addOrRemove(id){
+    for(let i=0;i<colorsArray.length;i++){
+        let curId=colorsArray[i]
+        if(id===curId){
+           flagArray[i]=true
+        }
+        else{
+            flagArray[i]=false
+        }
+    }
+    for(let i=0;i<flagArray.length;i++){
+        var liColor=document.getElementById(colorsArray[i])
+        if(flagArray[i]){
+            liColor.classList.add("active")
+        }
+        else{
+            liColor.classList.remove("active")
+        }
+    }
+}
+
+function setBrush(){
+    thin.onclick=function(){
+        lineWidth=3
+        thin.classList.add("active")
+        thick.classList.remove("active")
+    }
+    thick.onclick=function(){
+        lineWidth=6
+        thin.classList.remove("active")
+        thick.classList.add("active")
+    }    
+}
+
 function brushOrEraser(){
-    
     eraser.onclick=function(){
         eraserEnabled=true
         eraser.classList.add("active")
@@ -235,8 +220,4 @@ function brushOrEraser(){
     }
 }
 
-function drawCircle(x,y,radius){
-    context.beginPath()
-    context.arc(x,y,radius,0,Math.PI*2)
-    context.fill()
-}//画圆圈没有意义
+
