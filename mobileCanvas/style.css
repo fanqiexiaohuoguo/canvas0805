@@ -3,7 +3,6 @@
     padding: 0;
     touch-action: pan-y; 
 } 
-
 body{
     overflow: hidden; /*禁用滚动 */
 }
@@ -89,9 +88,25 @@ canvas{
 }
 .sizes{
     position: fixed;
-    top: 45px;
-    right: 20px;
     padding: 10px;
+}
+@media screen and (min-width:320px) and (max-width:767px){
+    .action{
+        left: 2px;
+    }
+    .sizes{
+        top: 45px;
+        right: 20px;
+    }
+}
+@media screen and (min-width:767px ) {
+    .action{
+        left: 18px;
+    }
+    .sizes{
+        top: 47px;
+        left: 55px;
+    }
 }
 .sizes>li{
     margin: 10px 0px;
