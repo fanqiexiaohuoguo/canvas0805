@@ -15,9 +15,9 @@ div#actions{
 .action>#brush{
     display: none;
 }
-.action.x>#brush{
+.action.active>#brush{
     display: inline-block;
 }
-.action.x>#eraser{
+.action.active>#eraser{
     display: none;
 }

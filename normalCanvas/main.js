@@ -2,6 +2,9 @@ var mycanvas=document.getElementById("canvas")
 var context=canvas.getContext("2d")   
 var div=document.getElementById("actions")
 var eraserEnabled=false
+//无论浏览器视窗多大，都可以无bug绘画
+//监听鼠标的动作
+//判断是在使用橡皮擦还是画笔
 
 autoSetCanvasSize(mycanvas)
 
@@ -25,19 +28,19 @@ function listenToMouse(canvas,context){
     }
 
     var using=false
-var lastPoint={"x":undefined,"y":undefined}
+    var lastPoint={"x":undefined,"y":undefined}
 
-canvas.onmousedown=function(event){
-    var x=event.clientX
-    var y=event.clientY
-    using=true
-    if(eraserEnabled){
-        context.clearRect(x-5,y-5,10,10)
+    canvas.onmousedown=function(event){
+        var x=event.clientX
+        var y=event.clientY
+        using=true
+        if(eraserEnabled){
+            context.clearRect(x-5,y-5,10,10)
+        }
+        else{     
+            lastPoint={"x":x,"y":y}
+        }
     }
-    else{     
-        lastPoint={"x":x,"y":y}
-    }
-}
     canvas.onmousemove=function(event){
         var x=event.clientX
         var y=event.clientY
@@ -82,7 +85,7 @@ function brushOrEraser(div){
     
     eraser.onclick=function(){
         eraserEnabled=true
-        div.className="action x"
+        div.className="action active"
     }
     brush.onclick=function(){
         eraserEnabled=false
@@ -94,4 +97,4 @@ function drawCircle(x,y,radius){
     context.beginPath()
     context.arc(x,y,radius,0,Math.PI*2)
     context.fill()
-}//画圆圈没有意义\\
+}//画圆圈没有意义
