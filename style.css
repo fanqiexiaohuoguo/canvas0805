@@ -1,23 +1,126 @@
 *{
     margin: 0;
     padding: 0;
+    touch-action: pan-y; 
+} 
+body{
+    overflow: hidden; /*禁用滚动 */
 }
+ol{
+    list-style: none;
+}
+.icon {
+    width: 1em; height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+ }
 canvas{
-    background: pink;
-    /* margin: 10px auto; */
+    background:white;
     display: block;/*这一句有用 */
+    position:fixed;
+    top: 0;
+    left: 0;
 }
-div#actions{
+.action{
     position: fixed;
-    left: 0px;
+    left:2px;
     top: 0px;
+    padding: 20px;
 }
-.action>#brush{
-    display: none;
+.action svg{
+    width: 1.5em;
+    height: 1.5em;
+    transition: 0.2s all;
+    margin: 0 10px;
 }
-.action.active>#brush{
-    display: inline-block;
+.action svg.active{
+    fill: rgb(185, 87, 185);
+    transform:scale(1.2);
 }
-.action.active>#eraser{
-    display: none;
+.colors{
+    position: fixed;
+    top: 45px;
+    left: 18px;
+    padding: 10px;
+}
+.colors >li{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border:#c0c0c0 1px solid;
+    box-sizing: border-box;
+    transition: all 0.2s;
+    margin: 10px 0px;
+    position: relative;
+}
+.colors>li svg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    fill:transparent;
+}
+.colors >li.active svg{
+    font-weight: bold;
+    fill: white;
+}
+.colors >li.active.yellow svg{
+    font-weight: bold;
+    fill: black;
+}
+.colors >li.black{
+    background: black;
+}
+.colors >li.red{
+    background: red;
+}
+.colors >li.green{
+    background: green;
+}
+.colors >li.blue{
+    background: blue;
+}
+.colors >li.yellow{
+    background: yellow;
+}
+.sizes{
+    position: fixed;
+    padding: 10px;
+}
+@media screen and (min-width:320px) and (max-width:767px){
+    .action{
+        left: 2px;
+    }
+    .sizes{
+        top: 47px;
+        right: 20px;
+    }
+}
+@media screen and (min-width:767px ) {
+    .action{
+        left: 18px;
+    }
+    .sizes{
+        top: 47px;
+        left: 55px;
+    }
+}
+.sizes>li{
+    margin: 10px 0px;
+    background:black;
+    transition: all 0.2s;
+}
+.sizes >li.active{
+    background: crimson;
+}
+.sizes>li.thin{
+    width:20px;
+    height: 3px;
+}
+.sizes>li.thick{
+    width:20px;
+    height: 6px;
 }
